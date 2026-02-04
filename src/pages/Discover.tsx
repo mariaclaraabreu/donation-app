@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import type { DonationItem } from "../types/donation";
 import { listDonationItems } from "../services/items.service";
+import { useItemsStore } from "../store/itemsStore";
 import { Layout } from "../components/Layout";
 import { DonationCard } from "../components/DonationCard";
 
 export function Discover() {
     const navigate = useNavigate();
-    const [items, setItems] = useState<DonationItem[]>([]);
+    const items = useItemsStore((s) => s.items);
+    const setItems = useItemsStore((s) => s.setItems);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         listDonationItems()
             .then(setItems)
             .finally(() => setLoading(false));
-    }, []);
+    }, [setItems]);
 
     return (
         <Layout>
