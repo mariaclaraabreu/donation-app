@@ -52,7 +52,7 @@ export function ItemDetail() {
                 >
                     ← Back
                 </button>
-                <p>Item não encontrado.</p>
+                <p>Item not found.</p>
             </Layout>
         );
     }
@@ -158,7 +158,7 @@ export function ItemDetail() {
                                 Pet
                             </strong>
                             <p style={{ margin: "8px 0 0", fontSize: 14 }}>
-                                Espécie: {item.pet.species} • Tamanho:{" "}
+                                Species: {item.pet.species} • Size:{" "}
                                 {item.pet.size}
                                 {item.pet.vaccinated != null &&
                                     ` • Vaccinated: ${item.pet.vaccinated ? "Yes" : "No"}`}
