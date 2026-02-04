@@ -2,7 +2,7 @@ import type { DonationItem } from "../types/donation";
 
 type DonationCardProps = {
     item: DonationItem;
-    onOpen?: (id: string) => void; // depois a gente conecta com router
+    onOpen?: (id: string) => void;
 };
 
 function clamp(text: string, max = 120) {
@@ -83,7 +83,7 @@ export function DonationCard({ item, onOpen }: DonationCardProps) {
                             }}
                             onClick={() => onOpen?.(item.id)}
                         >
-                            Ver detalhes
+                            View details
                         </button>
                     </div>
                 </div>
