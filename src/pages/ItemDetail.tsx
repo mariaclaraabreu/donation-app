@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "@tanstack/react-router";
-import type { DonationItem } from "../types/donation";
 import { getDonationItem } from "../services/items.service";
+import { useItemsStore, getItemById } from "../store/itemsStore";
 import { Layout } from "../components/Layout";
 
 const backButtonStyle = {
@@ -18,16 +18,26 @@ const backButtonStyle = {
 export function ItemDetail() {
     const { id } = useParams({ strict: false });
     const navigate = useNavigate();
-    const [item, setItem] = useState<DonationItem | null>(null);
+    const storeItem = useItemsStore((s) => s.items.find((i) => i.id === id));
+    const setItem = useItemsStore((s) => s.setItem);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const fromStore = getItemById(id);
+        if (fromStore) {
+            queueMicrotask(() => setLoading(false));
+            return;
+        }
         getDonationItem(id)
-            .then(setItem)
+            .then((fetched) => {
+                if (fetched) setItem(fetched);
+            })
             .finally(() => setLoading(false));
-    }, [id]);
+    }, [id, setItem]);
 
-    if (loading) {
+    const item = storeItem;
+
+    if (loading && !item) {
         return (
             <Layout>
                 <button
@@ -35,7 +45,7 @@ export function ItemDetail() {
                     onClick={() => navigate({ to: "/" })}
                     style={backButtonStyle}
                 >
-                    ← Voltar
+                    ← Back
                 </button>
                 <div>loading...</div>
             </Layout>
@@ -66,7 +76,7 @@ export function ItemDetail() {
                 onClick={() => navigate({ to: "/" })}
                 style={backButtonStyle}
             >
-                ← Voltar
+                ← Back
             </button>
             <article
                 style={{
