@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import type { DonationItem } from "../types/donation";
 import { listDonationItems } from "../services/items.service";
 import { Layout } from "../components/Layout";
 import { DonationCard } from "../components/DonationCard";
 
 export function Discover() {
+    const navigate = useNavigate();
     const [items, setItems] = useState<DonationItem[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -29,7 +31,9 @@ export function Discover() {
                             <DonationCard
                                 key={item.id}
                                 item={item}
-                                onOpen={(id) => alert(`to /item/${id}`)}
+                                onOpen={(id) =>
+                                    navigate({ to: "/item/$id", params: { id } })
+                                }
                             />
                         ))}
                     </div>
